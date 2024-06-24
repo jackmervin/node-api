@@ -1,5 +1,5 @@
 import express from "express";
-
+import movieRouter from "./routes/movies.routes.js";
 const app = express();
 const PORT = 6969;
 
@@ -8,18 +8,7 @@ app.get("/", (req, res) => {
 });
 
 //CURD Functionality
-
-//R - for Reading
-app.get("/movies", () => {});
-
-//C - for Create
-app.post("/movies", () => {});
-
-//U - for Update
-app.put("/movies", () => {});
-
-//D - for Delete
-app.put("/movies", () => {});
+app.use("/movies", movieRouter);
 
 app.listen(PORT, () => {
   console.log(`The server running at http://localhost:${PORT}`);
