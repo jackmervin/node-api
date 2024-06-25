@@ -1,9 +1,12 @@
 export const MovieIndex = (req, res) => {
-  res.send("Reade movies details");
+  // res.send("Reade movies details");
 };
 
 export const MovieCreat = (req, res) => {
-  res.send("Create the  movies ");
+  // res.send("Create the  movies ");
+  console.log(req.body);
+
+  return res.json(req.body);
 };
 
 export const MovieUpdate = (req, res) => {

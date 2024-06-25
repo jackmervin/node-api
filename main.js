@@ -7,6 +7,10 @@ const PORT = 6969;
 //Connect DB
 connectDB();
 
+//Data Understanding middlware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
   res.json({ msg: "hello World" });
 });
