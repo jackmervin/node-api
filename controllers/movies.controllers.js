@@ -1,7 +1,12 @@
 import Movie from "../model/movie.model.js";
 
-export const MovieIndex = (req, res) => {
-  // res.send("Reade movies details");
+export const MovieIndex = async (req, res) => {
+  try {
+    const GetMovie = await Movie.find();
+    res.json(GetMovie);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 export const MovieCreat = async (req, res) => {
