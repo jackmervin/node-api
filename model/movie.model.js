@@ -1,6 +1,7 @@
 import mongoose, { Schema, model } from "mongoose";
 
 const schema = new Schema({
+  cId: { type: Number },
   title: {
     type: String,
     required: true,

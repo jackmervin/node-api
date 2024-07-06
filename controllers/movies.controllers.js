@@ -2,16 +2,61 @@ import Movie from "../model/movie.model.js";
 
 export const MovieIndex = async (req, res) => {
   try {
-    const GetMovie = await Movie.find();
+    const cId = req.query.cId;
+    const title = req.query.title;
+    const desc = req.query.desc;
+    let query = {};
+    if (cId) {
+      query.cId = parseInt(cId);
+    }
+    if (title) {
+      query.title = { $regex: title, $options: "i" };
+    }
+    if (desc) {
+      query.desc = { $regex: desc, $options: "i" };
+    }
+    // const GetMovie = await Movie.findOne({
+    //   cId: req.query.cId,
+    // });
+    const GetMovie = await Movie.find(query);
     res.json(GetMovie);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
+// export const MovieGetById = async (req, res) => {
+//   try {
+//     const movie = await Movie.findById(req.params.id);
+//     console.log(movie);
+//     if (movie == null) {
+//       return res.status(404).json({ message: "Movie Not Found" });
+//     } else {
+//       res.json(movie);
+//     }
+//   } catch (error) {
+//     return res.status(500).json({ message: error.message });
+//   }
+// };
+
+// export const MovieGetById = async (req, res) => {
+//   try {
+//     const movie = await Movie.findOne({ cId: req.params.id });
+
+//     if (movie == null) {
+//       return res.status(404).json({ message: "Movie Not Found" });
+//     } else {
+//       res.json(movie);
+//     }
+//   } catch (error) {
+//     return res.status(500).json({ message: error.message });
+//   }
+// };
+
 export const MovieGetById = async (req, res) => {
   try {
-    const movie = await Movie.findById(req.params.id);
+    const movie = await Movie.findOne({ cId: req.params.id });
+
     if (movie == null) {
       return res.status(404).json({ message: "Movie Not Found" });
     } else {
@@ -23,8 +68,16 @@ export const MovieGetById = async (req, res) => {
 };
 
 export const MovieCreat = async (req, res) => {
+  const GetMovie = await Movie.find();
+  const sort = await GetMovie.sort((a, b) => {
+    const num1 = a.cId;
+    const num2 = b.cId;
+    return num2 - num1;
+  });
+
   //Validate your data
   const newMovie = new Movie({
+    cId: sort[0].cId + 1,
     title: req.body.title,
     desc: req.body.desc,
   });
@@ -51,9 +104,9 @@ export const MovieUpdate = async (req, res) => {
 };
 
 export const MovieDelete = async (req, res) => {
-  const movieId = req.params.id;
+  const movieId = req.params.cId;
   try {
-    await Movie.find().deleteOne({ _id: movieId });
+    await Movie.find().deleteOne({ cId: movieId });
     res.json({ message: "Movie  deleted!" });
   } catch (error) {
     res.status(500).json({ message: error.message });
